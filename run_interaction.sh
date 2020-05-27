@@ -1,7 +1,7 @@
 ## this is basically a copy of run_RDF.sh`
 ## HEADGROUPS:
 SEL='group 1'
-CUTOFF='6'
+###CUTOFF='6'
 POPS='resname POPS and name CNO PO4 GL1 GL2'
 POPI='resname POPI and name C1 C2 C3 PO4 GL1 GL2'
 POPC='resname POPC and name NC3 PO4 GL1 GL2'
@@ -17,13 +17,21 @@ do
 	top=../trajectories/tpr_files/$name.tpr
 	echo $top
 
-	# gmx pairdist -f $traj -s $top -selgrouping res -refgrouping all -cutoff $CUTOFF -ref "$REF" -sel 'group 13 and '"$POPC" -o $name.POPC_head.xvg
-	 gmx pairdist -f $traj -s $top -selgrouping res -refgrouping all -cutoff $CUTOFF -ref "$POPS" -sel $SEL -o ../interactions/$name.POPS_head.xvg
-	 gmx pairdist -f $traj -s $top -selgrouping res -refgrouping all -cutoff $CUTOFF -ref "$POPI" -sel $SEL -o ../interactions/$name.POPI_head.xvg
-	 gmx pairdist -f $traj -s $top -selgrouping res -refgrouping all -cutoff $CUTOFF -ref "$POPC" -sel $SEL -o ../interactions/$name.POPC_head.xvg
-	 gmx pairdist -f $traj -s $top -selgrouping res -refgrouping all -cutoff $CUTOFF -ref "$POPE" -sel $SEL -o ../interactions/$name.POPE_head.xvg
-	 gmx pairdist -f $traj -s $top -selgrouping res -refgrouping all -cutoff $CUTOFF -ref "$CHOL" -sel $SEL -o ../interactions/$name.CHOL_head.xvg
-	 gmx pairdist -f $traj -s $top -selgrouping res -refgrouping all -cutoff $CUTOFF -ref "$DPCE" -sel $SEL -o ../interactions/$name.DPCE_head.xvg
+	# gmx pairdist -f $traj -s $top -selgrouping res -refgrouping res -cutoff 6 -ref "$REF" -sel 'group 13 and '"$POPC" -o $name.POPC.cutoff6.xvg
+	 gmx pairdist -f $traj -s $top -selgrouping res -refgrouping res -cutoff 6 -ref "$POPS" -sel "$SEL" -xvg none -o ../interactions/$name.POPS.6cutoff.xvg
+	 gmx pairdist -f $traj -s $top -selgrouping res -refgrouping res -cutoff 6 -ref "$POPI" -sel "$SEL" -xvg none -o ../interactions/$name.POPI.6cutoff.xvg
+	 gmx pairdist -f $traj -s $top -selgrouping res -refgrouping res -cutoff 6 -ref "$POPC" -sel "$SEL" -xvg none -o ../interactions/$name.POPC.6cutoff.xvg
+	 gmx pairdist -f $traj -s $top -selgrouping res -refgrouping res -cutoff 6 -ref "$POPE" -sel "$SEL" -xvg none -o ../interactions/$name.POPE.6cutoff.xvg
+	 gmx pairdist -f $traj -s $top -selgrouping res -refgrouping res -cutoff 6 -ref "$CHOL" -sel "$SEL" -xvg none -o ../interactions/$name.CHOL.6cutoff.xvg
+	 gmx pairdist -f $traj -s $top -selgrouping res -refgrouping res -cutoff 6 -ref "$DPCE" -sel "$SEL" -xvg none -o ../interactions/$name.DPCE.6cutoff.xvg
+
+	### NEW CUTOFF
+	 gmx pairdist -f $traj -s $top -selgrouping res -refgrouping res -cutoff 4 -ref "$POPS" -sel "$SEL" -xvg none -o ../interactions/$name.POPS.4cutoff.xvg
+	 gmx pairdist -f $traj -s $top -selgrouping res -refgrouping res -cutoff 4 -ref "$POPI" -sel "$SEL" -xvg none -o ../interactions/$name.POPI.4cutoff.xvg
+	 gmx pairdist -f $traj -s $top -selgrouping res -refgrouping res -cutoff 4 -ref "$POPC" -sel "$SEL" -xvg none -o ../interactions/$name.POPC.4cutoff.xvg
+	 gmx pairdist -f $traj -s $top -selgrouping res -refgrouping res -cutoff 4 -ref "$POPE" -sel "$SEL" -xvg none -o ../interactions/$name.POPE.4cutoff.xvg
+	 gmx pairdist -f $traj -s $top -selgrouping res -refgrouping res -cutoff 4 -ref "$CHOL" -sel "$SEL" -xvg none -o ../interactions/$name.CHOL.4cutoff.xvg
+	 gmx pairdist -f $traj -s $top -selgrouping res -refgrouping res -cutoff 4 -ref "$DPCE" -sel "$SEL" -xvg none -o ../interactions/$name.DPCE.4cutoff.xvg
 done
 
 
@@ -34,10 +42,18 @@ do
         top=../trajectories/tpr_files/$name.tpr
         echo $top
 
-        # gmx pairdist -f $traj -s $top -selgrouping res -refgrouping all -cutoff $CUTOFF -ref 'group -sel $SEL 13 and '"$POPC" -o $name.POPC_head.xvg
-         gmx pairdist -f $traj -s $top -selgrouping res -refgrouping all -cutoff $CUTOFF -ref "$POPS" -sel $SEL -o ../interactions/$name.POPS_head.xvg
-         gmx pairdist -f $traj -s $top -selgrouping res -refgrouping all -cutoff $CUTOFF -ref "$POPI" -sel $SEL -o ../interactions/$name.POPI_head.xvg
-         gmx pairdist -f $traj -s $top -selgrouping res -refgrouping all -cutoff $CUTOFF -ref "$POPC" -sel $SEL -o ../interactions/$name.POPC_head.xvg
-         gmx pairdist -f $traj -s $top -selgrouping res -refgrouping all -cutoff $CUTOFF -ref "$POPE" -sel $SEL -o ../interactions/$name.POPE_head.xvg
-         gmx pairdist -f $traj -s $top -selgrouping res -refgrouping all -cutoff $CUTOFF -ref "$CHOL" -sel $SEL -o ../interactions/$name.CHOL_head.xvg
+        # gmx pairdist -f $traj -s $top -selgrouping res -refgrouping res -cutoff 6 -ref 'group -sel "$SEL" -xvg none 13 and '"$POPC" -o $name.POPC.6cutoff.xvg
+         gmx pairdist -f $traj -s $top -selgrouping res -refgrouping res -cutoff 6 -ref "$POPS" -sel "$SEL" -xvg none -o ../interactions/$name.POPS.6cutoff.xvg
+         gmx pairdist -f $traj -s $top -selgrouping res -refgrouping res -cutoff 6 -ref "$POPI" -sel "$SEL" -xvg none -o ../interactions/$name.POPI.6cutoff.xvg
+         gmx pairdist -f $traj -s $top -selgrouping res -refgrouping res -cutoff 6 -ref "$POPC" -sel "$SEL" -xvg none -o ../interactions/$name.POPC.6cutoff.xvg
+         gmx pairdist -f $traj -s $top -selgrouping res -refgrouping res -cutoff 6 -ref "$POPE" -sel "$SEL" -xvg none -o ../interactions/$name.POPE.6cutoff.xvg
+         gmx pairdist -f $traj -s $top -selgrouping res -refgrouping res -cutoff 6 -ref "$CHOL" -sel "$SEL" -xvg none -o ../interactions/$name.CHOL.6cutoff.xvg
+
+	## NEW CUTOFF
+         gmx pairdist -f $traj -s $top -selgrouping res -refgrouping res -cutoff 4 -ref "$POPS" -sel "$SEL" -xvg none -o ../interactions/$name.POPS.4cutoff.xvg
+         gmx pairdist -f $traj -s $top -selgrouping res -refgrouping res -cutoff 4 -ref "$POPI" -sel "$SEL" -xvg none -o ../interactions/$name.POPI.4cutoff.xvg
+         gmx pairdist -f $traj -s $top -selgrouping res -refgrouping res -cutoff 4 -ref "$POPC" -sel "$SEL" -xvg none -o ../interactions/$name.POPC.4cutoff.xvg
+         gmx pairdist -f $traj -s $top -selgrouping res -refgrouping res -cutoff 4 -ref "$POPE" -sel "$SEL" -xvg none -o ../interactions/$name.POPE.4cutoff.xvg
+         gmx pairdist -f $traj -s $top -selgrouping res -refgrouping res -cutoff 4 -ref "$CHOL" -sel "$SEL" -xvg none -o ../interactions/$name.CHOL.4cutoff.xvg
+
 done
