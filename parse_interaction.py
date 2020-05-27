@@ -10,7 +10,7 @@ from cutoff_function import dual_cutoff  #dual cutoff script is elsewhere, see b
 ## since it's r1s1, r2s1, r3s1... r1s2, r2s2, r3s2...
 
 num_residues = 473
-filename = 'GLUT5.O.30'
+filename = 'GLUT5.I.30'
 final_df = pd.DataFrame(index = np.arange(num_residues))
 if '30' in filename:
     lipid_names = ['POPC', 'POPE', 'POPS', 'CHOL', 'POPI', 'DPCE']
@@ -23,8 +23,8 @@ for lipid in lipid_names:
     print(lipid)
     for rep in np.arange(1,reps+1):
 	print(rep)
-        longs_total = np.loadtxt('../interactions/%s.%i.%s.6cutoff.xvg' %(filename, rep, lipid), dtype = bool)
-        short_total = np.loadtxt('../interactions/%s.%i.%s.4cutoff.xvg' %(filename,rep, lipid), dtype = bool)
+        longs_total = np.loadtxt('../interactions2/%s.%i.%s.13cutoff.xvg' %(filename, rep, lipid), dtype = bool)
+        short_total = np.loadtxt('../interactions2/%s.%i.%s.7cutoff.xvg' %(filename,rep, lipid), dtype = bool)
         
         num_lipids = int(np.shape(longs_total)[1]/num_residues)
         
