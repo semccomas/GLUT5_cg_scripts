@@ -9,7 +9,13 @@ Created on Thu Apr 30 15:56:04 2020
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+import MDAnalysis as md
 
+
+################################################################
+########### Parse input, make df of means and raw counts ########
+########### index = resid #, column = lipid ####################
+################################################################
 num_residues = 473
 filename = 'GLUT5.I.0'
 final_df = pd.DataFrame(index = np.arange(num_residues))
@@ -40,9 +46,13 @@ mean_df=mean_df.fillna(0) #need to remove NaN's for plotting, just make them zer
  ## since the original trajectory is every 10ns, one binding event of 150 for example is 1500ns
  ## I want to represent this in us, therefore *10 and /1000 (== /100) to make 1.5us
 mean_df = mean_df/100
-#### plotting
 
-#plotting per residue
+#%%
+
+################################################################
+########### PLOTTING for lipids ################################
+################################################################
+
 start_graph = 230
 ind1 = np.arange(0,start_graph)       
 ind2 = np.arange(start_graph,473)       
@@ -76,8 +86,53 @@ plt.legend(bbox_to_anchor=(1.2,1.5))
 plt.savefig('per_resid_interaction.%s.png' %filename, dpi = 800, bbox_inches='tight')
 
 
-
+plt.clf()
 #plot per lipid
-#plt.bar(np.arange(len(lipid_names)), mean_df.mean(axis=0).tolist(), label = lipid_names, color = colors)
-#plt.legend()
+plt.bar(np.arange(len(lipid_names)), mean_df.mean(axis=0).tolist(), label = lipid_names, color = colors)
+plt.legend()
+plt.show()
+
+plt.clf()
+
+#%%
+
+################################################################
+########### PLOTTING for residues ################################
+################################################################
+
+#a = mean_df.sort_values(by=['POPC'], ascending = False)
+if 'I' in filename:
+    atomistic = md.Universe('../../rGLUT5_in/rGLUT5_in.118ns.pdb')
+elif 'O' in filename:
+    atomistic = md.Universe('../../rGLUT5_out/rGLUT5_out.189ns.pdb')
+mean_df = mean_df.round(2) * 10  # this is just for visualization purpose, the b factor can only be up to 2 decimals..
+
+def write_beta(mean_lipid, lipidname):
+    lipid_tempfactor = []
+    for n, list_atoms in enumerate(atomistic.residues.tempfactors):
+        for tempfactor in list_atoms:
+            if n < 473:   #for some reason in cg sims we don't have v474 so I will remove this from results
+                lipid_tempfactor.append(mean_lipid[n])
+            else:
+                lipid_tempfactor.append(0)
+                
+    atomistic.residues.atoms.tempfactors = lipid_tempfactor
+    atomistic.atoms.write('../pdb_files_beta/%s.%s_mean_beta.pdb' %(filename, lipidname))
+
+for lipid in lipid_names: 
+    mean_lipid = mean_df[lipid].tolist()
+    write_beta(mean_lipid, lipid)
+
+write_beta(mean_df.mean(axis=1), 'all_lipids')
+
+#%%
+for lipid in lipid_names:
+    top_res_l = []
+    top = mean_df.sort_values(by = [lipid], ascending = False)
+    for res in top.index[0:5]:
+        top_res_l.append('%s:%i' %(md.lib.util.convert_aa_code(atomistic.residues[res].resname),
+                                   atomistic.residues[res].resid))
+
+    print('Top residues binding %s are %s' %(lipid, top_res_l))
+    print()
 
